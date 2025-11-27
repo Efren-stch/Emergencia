@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/img_fondo_principal" android:orientation="vertical" android:padding="20dp" tools:context=".ui.principal.combo.cuenta.CuentaFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:src="@drawable/img_logo_principal_texto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_esquinas_redondeadas_acceso"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Configuración de Cuenta"
+            android:textColor="@color/acento"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <!-- Campo para cambiar nombre de usuario -->
+        <EditText
+            android:id="@+id/et_nombre_cuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:contentDescription="Campo para cambiar el nombre de usuario"
+            android:drawableStart="@drawable/ic_usuario"
+            android:drawablePadding="7dp"
+            android:hint="Nombre de usuario"
+            android:importantForAutofill="yes"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <!-- Campo para cambiar contraseña -->
+        <EditText
+            android:id="@+id/et_contrasena_cuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:contentDescription="Campo para cambiar la contraseña"
+            android:drawableStart="@drawable/ic_contrasena"
+            android:drawablePadding="10dp"
+            android:hint="Nueva contraseña"
+            android:importantForAutofill="yes"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <!-- Campo para confirmar contraseña -->
+        <EditText
+            android:id="@+id/et_confirmar_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:contentDescription="Campo para confirmar la nueva contraseña"
+            android:drawableStart="@drawable/ic_contrasena"
+            android:drawablePadding="10dp"
+            android:hint="Confirmar nueva contraseña"
+            android:importantForAutofill="yes"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <!-- Campo para cambiar correo electrónico -->
+        <EditText
+            android:id="@+id/et_correo_cuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:contentDescription="Campo para cambiar el correo electrónico"
+            android:drawableStart="@drawable/ic_correo"
+            android:drawablePadding="10dp"
+            android:hint="Correo electrónico"
+            android:importantForAutofill="yes"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_guardar_cambios"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/secundario"
+                android:contentDescription="Botón para guardar los cambios en la cuenta"
+                android:text="Guardar Cambios"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_eliminar_cuenta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/acento"
+                android:contentDescription="Botón para eliminar la cuenta"
+                android:text="Eliminar Cuenta"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="Indicador de carga mientras se aplican los cambios en la cuenta"
+        android:visibility="gone" />
+</LinearLayout>
+
+

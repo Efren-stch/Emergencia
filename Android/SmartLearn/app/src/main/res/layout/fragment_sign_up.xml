@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/img_fondo_principal"
+    tools:context=".ui.acceso.SignUpFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:src="@drawable/img_logo_principal_texto" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_esquinas_redondeadas_acceso">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro de Usuarios"
+            android:textSize="35sp"
+            android:textColor="@color/acento"
+            android:textStyle="bold"
+            android:gravity="center" />
+        <EditText
+            android:id="@+id/et_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_usuario"
+            android:drawablePadding="7dp"
+            android:hint="@string/entrada_usuario"
+            android:textColorHint="@android:color/white"
+            android:textColor="@color/acento"
+            android:inputType="textPersonName"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:importantForAutofill="yes"
+            android:contentDescription="Campo para ingresar un nombre de usuario" />
+        <EditText
+            android:id="@+id/et_contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_contrasena"
+            android:drawablePadding="10dp"
+            android:hint="@string/entrada_contrasena"
+            android:textColorHint="@android:color/white"
+            android:textColor="@color/acento"
+            android:inputType="textPassword"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:importantForAutofill="yes"
+            android:contentDescription="Campo para ingresar una contraseña" />
+        <EditText
+            android:id="@+id/et_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_correo"
+            android:drawablePadding="10dp"
+            android:hint="@string/entrada_correo"
+            android:textColorHint="@android:color/white"
+            android:textColor="@color/acento"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:importantForAutofill="yes"
+            android:contentDescription="Campo para ingresar el correo de contacto" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accesibilidad por comandos de voz"
+            android:textColor="@color/acento"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_gravity="center" />
+        <RadioGroup
+            android:id="@+id/grupo_accesibilidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="40dp">
+
+            <RadioButton
+                android:id="@+id/radio_activa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Activa"
+                android:textSize="18sp"
+                android:textColor="@android:color/white" />
+            <RadioButton
+                android:id="@+id/radio_inactiva"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Inactiva"
+                android:textSize="18sp"
+                android:textColor="@android:color/white" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Tipo de Usuario"
+            android:textColor="@color/acento"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_gravity="center" />
+        <RadioGroup
+            android:id="@+id/grupo_tipo_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="40dp">
+
+            <RadioButton
+                android:id="@+id/radio_alumno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Alumno"
+                android:textSize="18sp"
+                android:textColor="@android:color/white" />
+            <RadioButton
+                android:id="@+id/radio_docente"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Docente"
+                android:textSize="18sp"
+                android:textColor="@android:color/white" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_regresar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:backgroundTint="@color/secundario"
+                android:text="Regresar"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:contentDescription="Botón para regresar a la pantalla anterior" />
+            <Button
+                android:id="@+id/btn_registro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:backgroundTint="@color/acento"
+                android:text="Registrar"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:contentDescription="Botón para registrar al nuevo usuario" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:contentDescription="Indicador de carga mientras se realiza el registro" />
+</LinearLayout>

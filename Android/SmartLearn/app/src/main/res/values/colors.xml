@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="principal">#193881</color>
+    <color name="secundario">#50C18F</color>
+    <color name="acento">#A0CFF1</color>
+    <color name="empresa">#020136</color>
+    <color name="azul_principal">#030034</color>
+</resources>

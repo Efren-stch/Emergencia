@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navegador_materias"
+    app:startDestination="@id/materiasFragment">
+
+
+
+
+
+    <!-- 2. Agregar Materia -->
+    <fragment
+        android:id="@+id/agregarMateriaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.agregarmateria.AgregarMateriaFragment"
+        android:label="Agregar Materia" />
+
+    <!-- 3. Configuración -->
+    <fragment
+        android:id="@+id/configuracionFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.configuracion.ConfiguracionFragment"
+        android:label="Configuración" />
+
+    <!-- 4. Accesibilidad -->
+    <fragment
+        android:id="@+id/accesibilidadFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.accesibilidad.AccesibilidadFragment"
+        android:label="Accesibilidad" />
+
+    <!-- 5. Cuenta -->
+    <fragment
+        android:id="@+id/cuentaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.cuenta.CuentaFragment"
+        android:label="Cuenta" />
+
+    <!-- 6. Ayuda -->
+    <fragment
+        android:id="@+id/ayudaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.ayuda.AyudaFragment"
+        android:label="Ayuda" />
+
+
+
+
+
+    <!-- 1. Materias -->
+    <fragment
+        android:id="@+id/materiasFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.principal.materias.MateriasFragment"
+        android:label="Materias"
+        tools:layout="@layout/fragment_materias">
+
+        <action
+            android:id="@+id/action_materiasFragment_to_temasFragment"
+            app:destination="@id/temasFragment">
+
+            <!-- ARGUMENTO PARA TEMAS -->
+            <argument
+                android:name="materiaId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+
+    <!-- 2. Temas -->
+    <fragment
+        android:id="@+id/temasFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.principal.materias.TemasFragment"
+        android:label="Temas"
+        tools:layout="@layout/fragment_temas">
+
+        <!-- Argumento que recibe el fragment -->
+        <argument
+            android:name="materiaId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+        <action
+            android:id="@+id/action_temasFragment_to_subtemasFragment"
+            app:destination="@id/subtemasFragment">
+
+            <!-- ARGUMENTO PARA SUBTEMAS -->
+            <argument
+                android:name="temaId"
+                app:argType="integer" />
+        </action>
+
+        <action
+            android:id="@+id/action_temasFragment_to_materiasFragment"
+            app:destination="@id/materiasFragment"
+            app:popUpTo="@id/materiasFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+
+    <!-- 3. Subtemas -->
+    <fragment
+        android:id="@+id/subtemasFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.principal.materias.SubtemasFragment"
+        android:label="Subtemas"
+        tools:layout="@layout/fragment_subtemas">
+
+        <!-- Argumento que recibe el fragment -->
+        <argument
+            android:name="temaId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+        <action
+            android:id="@+id/action_subtemasFragment_to_temasFragment"
+            app:destination="@id/temasFragment"
+            app:popUpTo="@id/temasFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+</navigation>
