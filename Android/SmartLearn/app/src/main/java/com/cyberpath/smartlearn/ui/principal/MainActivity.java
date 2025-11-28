@@ -20,14 +20,11 @@ import com.cyberpath.smartlearn.ui.principal.combo.ayuda.AyudaFragment;
 import com.cyberpath.smartlearn.ui.principal.combo.configuracion.ConfiguracionFragment;
 import com.cyberpath.smartlearn.ui.principal.combo.cuenta.CuentaFragment;
 import com.google.android.material.navigation.NavigationView;
-// Elimina la importación de MateriasActivity, ya no la necesitas
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ImageView btnMenu;
-    private ImageView btnPrincipal;
-    private NavController navController;  // Agrega esta variable
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        // Navega a MateriasFragment
         drawerLayout.closeDrawer(GravityCompat.START);
         navController.navigate(R.id.materiasFragment);
         drawerLayout.closeDrawer(GravityCompat.START);

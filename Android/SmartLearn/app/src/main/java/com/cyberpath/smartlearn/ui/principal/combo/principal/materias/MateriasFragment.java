@@ -67,10 +67,13 @@ public class MateriasFragment extends Fragment implements AdapterView.OnItemClic
             public void onResponse(Call<List<Materia>> call, Response<List<Materia>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Materia> materias = response.body();
-                    getActivity().runOnUiThread(() -> {
-                        adaptadorMaterias.actualizarLista(materias);
+                    requireActivity().runOnUiThread(() -> {
+                        listaMaterias.clear();
+                        listaMaterias.addAll(materias);
+                        adaptadorMaterias.notifyDataSetChanged();
+
                         if (materias.isEmpty()) {
-                            Toast.makeText(getContext(), "No hay materias disponibles", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "No hay temas para esta materia", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -95,9 +98,9 @@ public class MateriasFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Integer materiaId = position + 1;
+        Materia materia = listaMaterias.get(position);
         var action = MateriasFragmentDirections
-                .actionMateriasFragmentToTemasFragment(materiaId);
+                .actionMateriasFragmentToTemasFragment(materia);
 
         NavHostFragment.findNavController(this).navigate(action);
     }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
+import com.cyberpath.smartlearn.data.model.contenido.Tema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,10 @@ public class SubtemasFragment extends Fragment implements AdapterView.OnItemClic
     private AdaptadorSubtemas adaptadorSubtemas;
     private List<Subtema> listaSubtemas = new ArrayList<>();
 
+    private TextView textoTema;
+
+    private Tema tema;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,20 +47,24 @@ public class SubtemasFragment extends Fragment implements AdapterView.OnItemClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        textoTema = view.findViewById(R.id.tvNombreTema);
+
         listViewSubtemas = view.findViewById(R.id.listViewSubtemas);
         adaptadorSubtemas = new AdaptadorSubtemas(requireContext(), listaSubtemas);
         listViewSubtemas.setAdapter(adaptadorSubtemas);
         listViewSubtemas.setOnItemClickListener(this);
 
-        // RECIBIR EL ID DEL TEMA
-        int subtemaId = SubtemasFragmentArgs.fromBundle(getArguments()).getTemaId();
+        tema = SubtemasFragmentArgs.fromBundle(getArguments()).getTema();
+        int temaId = tema.getId();
 
-        if (subtemaId == -1) {
-            Toast.makeText(requireContext(), "Error: subtema no válido", Toast.LENGTH_SHORT).show();
+        textoTema.setText(tema.getNombre());
+
+        if (temaId == -1) {
+            Toast.makeText(requireContext(), "Error: tema no válido", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        cargarSubtemas(subtemaId);
+        cargarSubtemas(temaId);
     }
 
     private void cargarSubtemas(int subtemaId) {

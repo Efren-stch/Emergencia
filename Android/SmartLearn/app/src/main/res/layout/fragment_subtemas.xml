@@ -4,12 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="35dp"
+    android:padding="20dp"
     tools:context=".ui.principal.combo.principal.materias.SubtemasFragment">
 
-    <ListView
-        android:id="@+id/listViewSubtemas"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Subtemas"
+            android:textColor="@color/acento"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvNombreTema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Tema: ''Algún Subtema''"
+            android:textColor="@color/acento"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:paddingTop="20dp"
+            android:id="@+id/listViewSubtemas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>

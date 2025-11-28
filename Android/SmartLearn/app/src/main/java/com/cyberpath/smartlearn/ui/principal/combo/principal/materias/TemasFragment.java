@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
+import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 
 import java.util.ArrayList;
@@ -26,10 +28,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TemasFragment extends Fragment implements AdapterView.OnItemClickListener {
+    private TextView textoMateria;
 
     private ListView listViewTemas;
     private AdaptadorTemas adaptadorTemas;
     private List<Tema> listaTemas = new ArrayList<>();
+
+    private Materia materia;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,18 +46,23 @@ public class TemasFragment extends Fragment implements AdapterView.OnItemClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        textoMateria = view.findViewById(R.id.tvNombreMateria);
+
         listViewTemas = view.findViewById(R.id.listViewTemas);
         adaptadorTemas = new AdaptadorTemas(requireContext(), listaTemas);
         listViewTemas.setAdapter(adaptadorTemas);
         listViewTemas.setOnItemClickListener(this);
 
-        // RECIBIR EL ID DE LA MATERIA
-        int materiaId = TemasFragmentArgs.fromBundle(getArguments()).getMateriaId();
+        materia = TemasFragmentArgs.fromBundle(getArguments()).getMateria();
+        int materiaId = materia.getId();
+
+        textoMateria.setText(materia.getNombre());
 
         if (materiaId == -1) {
             Toast.makeText(requireContext(), "Error: materia no válida", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         cargarTemas(materiaId);
     }
@@ -94,9 +104,9 @@ public class TemasFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Integer temaId = position + 1;
+        Tema tema = listaTemas.get(position);
 
-        var action = TemasFragmentDirections.actionTemasFragmentToSubtemasFragment(temaId);
+        var action = TemasFragmentDirections.actionTemasFragmentToSubtemasFragment(tema);
         NavHostFragment.findNavController(this).navigate(action);
     }
 }

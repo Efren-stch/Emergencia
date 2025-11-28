@@ -113,7 +113,6 @@ CREATE TABLE tbl_usuario (
   nombre_cuenta VARCHAR(100) NOT NULL,
   correo VARCHAR(255) NOT NULL,
   contrasena VARCHAR(255) NOT NULL,
-  accesibilidad TINYINT(1) NOT NULL,
   id_rol INT NOT NULL,
   PRIMARY KEY (id_usuario),
   UNIQUE KEY uniq_correo (correo),

@@ -56,8 +56,8 @@
 
             <!-- ARGUMENTO PARA TEMAS -->
             <argument
-                android:name="materiaId"
-                app:argType="integer" />
+                android:name="materia"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Materia" />
         </action>
     </fragment>
 
@@ -68,23 +68,16 @@
         android:name="com.cyberpath.smartlearn.ui.principal.combo.principal.materias.TemasFragment"
         android:label="Temas"
         tools:layout="@layout/fragment_temas">
-
-        <!-- Argumento que recibe el fragment -->
         <argument
-            android:name="materiaId"
-            app:argType="integer"
-            android:defaultValue="-1" />
-
+            android:name="materia"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Materia" />
         <action
             android:id="@+id/action_temasFragment_to_subtemasFragment"
             app:destination="@id/subtemasFragment">
-
-            <!-- ARGUMENTO PARA SUBTEMAS -->
             <argument
-                android:name="temaId"
-                app:argType="integer" />
+                android:name="tema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Tema" />
         </action>
-
         <action
             android:id="@+id/action_temasFragment_to_materiasFragment"
             app:destination="@id/materiasFragment"
@@ -102,9 +95,8 @@
 
         <!-- Argumento que recibe el fragment -->
         <argument
-            android:name="temaId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="tema"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Tema" />
 
         <action
             android:id="@+id/action_subtemasFragment_to_temasFragment"

@@ -20,7 +20,7 @@
         android:layout_marginTop="30dp"
         android:padding="10dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_esquinas_redondeadas_acceso">
+        android:background="@drawable/bg_esquinas_redondeadas_fondo">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textColorHint="@android:color/white"
             android:textColor="@color/acento"
             android:inputType="textPersonName"
-            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
             android:importantForAutofill="yes"
             android:contentDescription="Campo para ingresar un nombre de usuario" />
         <EditText
@@ -58,7 +58,7 @@
             android:textColorHint="@android:color/white"
             android:textColor="@color/acento"
             android:inputType="textPassword"
-            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
             android:importantForAutofill="yes"
             android:contentDescription="Campo para ingresar una contraseña" />
         <EditText
@@ -74,7 +74,7 @@
             android:textColorHint="@android:color/white"
             android:textColor="@color/acento"
             android:inputType="textEmailAddress"
-            android:background="@drawable/bg_esquinas_redondas_edittext"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
             android:importantForAutofill="yes"
             android:contentDescription="Campo para ingresar el correo de contacto" />
         <TextView

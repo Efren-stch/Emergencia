@@ -35,7 +35,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         validarAcceso = new validarAcceso(this);
-        prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());  // Agregado: inicializar prefs
+        // Cambiado: Usar el mismo archivo que SignUpFragment para consistencia
+        prefs = requireActivity().getSharedPreferences("configuracion_app", requireContext().MODE_PRIVATE);
     }
 
     @Override

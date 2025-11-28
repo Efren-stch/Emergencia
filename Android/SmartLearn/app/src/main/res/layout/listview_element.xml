@@ -2,16 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
-    <!-- xml para los elementos del list view con imagen de las materias de inicio -->
+    android:orientation="horizontal"
+    android:background="@drawable/bg_esquinas_redondas_elementos"
+    android:gravity="center_vertical">
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageicon"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/textview"
-        android:textSize="20dp"/>
+        android:id="@+id/imageicon"
+        android:src="@drawable/ic_launcher_foreground" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:text="Hola"
+            android:id="@+id/textview"
+            android:textSize="16sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="Descripción"
+            android:id="@+id/descripcion"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
 </LinearLayout>
