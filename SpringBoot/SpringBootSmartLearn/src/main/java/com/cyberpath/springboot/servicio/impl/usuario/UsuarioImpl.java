@@ -1,6 +1,8 @@
 package com.cyberpath.springboot.servicio.impl.usuario;
 
 import com.cyberpath.springboot.modelo.relaciones.UsuarioMateria;
+import com.cyberpath.springboot.modelo.usuario.UltimaConexion;
+import com.cyberpath.springboot.repositorio.usuario.UltimaConexionRepositorio;
 import lombok.AllArgsConstructor;
 import com.cyberpath.springboot.modelo.ejercicio.IntentoEjercicio;
 import com.cyberpath.springboot.modelo.contenido.ProgresoSubtema;
@@ -9,12 +11,14 @@ import org.springframework.stereotype.Service;
 import com.cyberpath.springboot.repositorio.usuario.UsuarioRepositorio;
 import com.cyberpath.springboot.servicio.servicio.usuario.UsuarioServicio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class UsuarioImpl implements UsuarioServicio {
     private final UsuarioRepositorio usuarioRepositorio;
+    private final UltimaConexionRepositorio ultimaConexionRepositorio;
 
     @Override
     public List<Usuario> getAll() {
@@ -28,7 +32,18 @@ public class UsuarioImpl implements UsuarioServicio {
 
     @Override
     public Usuario save(Usuario usuario) {
-        return usuarioRepositorio.save(usuario);
+        // Primero guarda el usuario para obtener su ID
+        Usuario guardado = usuarioRepositorio.save(usuario);
+        // Crea UltimaConexion SIN setear ID manualmente (deja que @MapsId lo haga)
+        UltimaConexion ultimaConexion = UltimaConexion.builder()
+                .ultimaConexion(LocalDateTime.now().toString())  // Fecha actual como String
+                .dispositivo("default")  // Valor por defecto
+                .usuario(guardado)  // Asigna el usuario (esto asigna el ID automáticamente)
+                .build();
+        UltimaConexion guardadaConexion = ultimaConexionRepositorio.save(ultimaConexion);
+        // Si la relación es bidireccional, setea la referencia en Usuario
+        guardado.setUltimaConexion(guardadaConexion);
+        return guardado;
     }
 
     @Override

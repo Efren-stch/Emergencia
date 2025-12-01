@@ -11,6 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Materia implements Parcelable {
+    public static final Creator<Materia> CREATOR = new Creator<Materia>() {
+        @Override
+        public Materia createFromParcel(Parcel in) {
+            return new Materia(in);
+        }
+
+        @Override
+        public Materia[] newArray(int size) {
+            return new Materia[size];
+        }
+    };
     private Integer id;
     private String nombre;
     private String descripcion;
@@ -24,18 +35,6 @@ public class Materia implements Parcelable {
         nombre = in.readString();
         descripcion = in.readString();
     }
-
-    public static final Creator<Materia> CREATOR = new Creator<Materia>() {
-        @Override
-        public Materia createFromParcel(Parcel in) {
-            return new Materia(in);
-        }
-
-        @Override
-        public Materia[] newArray(int size) {
-            return new Materia[size];
-        }
-    };
 
     @Override
     public int describeContents() {

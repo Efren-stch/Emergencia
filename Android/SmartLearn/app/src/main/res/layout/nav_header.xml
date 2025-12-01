@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
-        <TableRow>
-            <ImageView
-                android:id="@+id/deplegar_menu"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:layout_marginVertical="30dp"
-                android:layout_marginHorizontal="5dp"
-                android:src="@drawable/img_desplegar_menu"
-                android:contentDescription="Desplegar Menú" />
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="80dp"
-                android:layout_weight="2"
-                android:layout_marginTop="25dp"
-                android:layout_marginHorizontal="5dp"
-                android:src="@drawable/img_logo_principal_imagen"
-                android:contentDescription="Logo Principal Smart Learn"
-                android:clickable="true"
-                android:focusable="true"
-                android:id="@+id/btn_principal"/>
-            <ImageView
-                android:layout_height="40dp"
-                android:layout_width="220dp"
-                android:layout_weight="5"
-                android:layout_marginTop="33dp"
-                android:layout_marginHorizontal="5dp"
-                android:src="@drawable/img_logo_principal_texto"
-                android:contentDescription="Logo Principal Smart Learn Letras" />
-        </TableRow>
+    <ImageView
+        android:id="@+id/deplegar_menu"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:contentDescription="Desplegar Menú"
+        android:src="@drawable/ic_desplegar_menu" />
 
-    </TableLayout>
+    <ImageView
+        android:id="@+id/btn_principal"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="2"
+        android:clickable="true"
+        android:contentDescription="Logo Principal Smart Learn"
+        android:focusable="true"
+        android:src="@drawable/img_logo_principal_imagen" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="5"
+        android:contentDescription="Logo Principal Smart Learn Letras"
+        android:src="@drawable/img_logo_principal_texto" />
 
 </LinearLayout>

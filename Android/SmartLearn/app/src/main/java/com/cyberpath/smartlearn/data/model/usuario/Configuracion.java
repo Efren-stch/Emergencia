@@ -11,13 +11,23 @@ public class Configuracion {
     private Integer id;
     private boolean modoAudio;
     private boolean notificacionesActivadas;
-    private Configuracion.TamanoFuente tamanoFuente = TamanoFuente.medio;
+    private Configuracion.TamanoFuente tamanoFuente = TamanoFuente.MEDIO;
     private boolean modoOffline;
     private boolean cuentaCreada;
 
     private Integer idUsuario;
 
     public enum TamanoFuente {
-        pequeno, medio, grande
+        PEQUENO(0), MEDIO(1), GRANDE(2);
+
+        Integer valor;
+
+        TamanoFuente(Integer valor) {
+            this.valor = valor;
+        }
+
+        public Integer getValor() {
+            return valor;
+        }
     }
 }

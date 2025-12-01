@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
@@ -27,14 +26,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TemasFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class TemasFragment extends Fragment {
     private TextView textoMateria;
-
-    private ListView listViewTemas;
-    private AdaptadorTemas adaptadorTemas;
-    private List<Tema> listaTemas = new ArrayList<>();
-
+    private ViewPager2 viewPagerTemas;
+    private AdaptadorTemas adapterTemas;
+    private final List<Tema> listaTemas = new ArrayList<>();
     private Materia materia;
+
+    private int ultimaPosicionReal = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,22 +46,11 @@ public class TemasFragment extends Fragment implements AdapterView.OnItemClickLi
         super.onViewCreated(view, savedInstanceState);
 
         textoMateria = view.findViewById(R.id.tvNombreMateria);
-
-        listViewTemas = view.findViewById(R.id.listViewTemas);
-        adaptadorTemas = new AdaptadorTemas(requireContext(), listaTemas);
-        listViewTemas.setAdapter(adaptadorTemas);
-        listViewTemas.setOnItemClickListener(this);
+        crearCarrusel(view);
 
         materia = TemasFragmentArgs.fromBundle(getArguments()).getMateria();
         int materiaId = materia.getId();
-
         textoMateria.setText(materia.getNombre());
-
-        if (materiaId == -1) {
-            Toast.makeText(requireContext(), "Error: materia no válida", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
 
         cargarTemas(materiaId);
     }
@@ -79,11 +67,21 @@ public class TemasFragment extends Fragment implements AdapterView.OnItemClickLi
                     requireActivity().runOnUiThread(() -> {
                         listaTemas.clear();
                         listaTemas.addAll(temas);
-                        adaptadorTemas.notifyDataSetChanged();
+                        adapterTemas.actualizarLista(new ArrayList<>(listaTemas));
+                        adapterTemas.notifyDataSetChanged();
+
+                        if (temas.size() > 0) {
+                            viewPagerTemas.setCurrentItem(1, false);
+                        }
 
                         if (temas.isEmpty()) {
                             Toast.makeText(requireContext(), "No hay temas para esta materia", Toast.LENGTH_SHORT).show();
                         }
+
+                        int posicionMostrar = ultimaPosicionReal + 1; // +1 por el duplicado inicial
+                        viewPagerTemas.setCurrentItem(posicionMostrar, false);
+
+                        viewPagerTemas.post(() -> viewPagerTemas.requestTransform());
                     });
                 } else {
                     mostrarError("Error al cargar temas");
@@ -102,11 +100,63 @@ public class TemasFragment extends Fragment implements AdapterView.OnItemClickLi
                 Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show());
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Tema tema = listaTemas.get(position);
-
+    private void onTemaClick(Tema tema) {
         var action = TemasFragmentDirections.actionTemasFragmentToSubtemasFragment(tema);
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    public void crearCarrusel(View view) {
+        viewPagerTemas = view.findViewById(R.id.viewPagerTemas);
+        adapterTemas = new AdaptadorTemas(listaTemas, this::onTemaClick);
+        viewPagerTemas.setAdapter(adapterTemas);
+
+        viewPagerTemas.setOffscreenPageLimit(3);
+        viewPagerTemas.setClipToPadding(false);
+        viewPagerTemas.setClipChildren(false);
+        viewPagerTemas.setPadding(80, 0, 80, 0);
+
+        viewPagerTemas.setPageTransformer((page, position) -> {
+            float scaleFactor = Math.max(0.85f, 1 - Math.abs(position) * 0.15f);
+            page.setScaleX(scaleFactor);
+            page.setScaleY(scaleFactor);
+            page.setAlpha(0.5f + (scaleFactor - 0.85f) / (1 - 0.85f) * 0.5f);
+        });
+
+        viewPagerTemas.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            private boolean isResetting = false;
+            @Override
+            public void onPageSelected(int position) {
+                int realSize = listaTemas.size();
+                if (realSize > 0) {
+                    ultimaPosicionReal = (position - 1 + realSize) % realSize;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager2.SCROLL_STATE_IDLE && !isResetting) {
+                    int position = viewPagerTemas.getCurrentItem();
+                    int realSize = listaTemas.size();
+
+                    if (realSize <= 1) return;
+
+                    if (position == 0) {
+                        isResetting = true;
+                        viewPagerTemas.setCurrentItem(realSize, false);
+                        viewPagerTemas.post(() -> {
+                            viewPagerTemas.requestTransform();
+                            isResetting = false;
+                        });
+                    } else if (position == realSize + 1) {
+                        isResetting = true;
+                        viewPagerTemas.setCurrentItem(1, false);
+                        viewPagerTemas.post(() -> {
+                            viewPagerTemas.requestTransform();
+                            isResetting = false;
+                        });
+                    }
+                }
+            }
+        });
     }
 }

@@ -2,23 +2,15 @@ package com.cyberpath.smartlearn.ui.principal;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;  // Agrega esta importación
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cyberpath.smartlearn.R;
-import com.cyberpath.smartlearn.ui.principal.combo.accesibilidad.AccesibilidadFragment;
-import com.cyberpath.smartlearn.ui.principal.combo.agregarmateria.AgregarMateriaFragment;
-import com.cyberpath.smartlearn.ui.principal.combo.ayuda.AyudaFragment;
-import com.cyberpath.smartlearn.ui.principal.combo.configuracion.ConfiguracionFragment;
-import com.cyberpath.smartlearn.ui.principal.combo.cuenta.CuentaFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

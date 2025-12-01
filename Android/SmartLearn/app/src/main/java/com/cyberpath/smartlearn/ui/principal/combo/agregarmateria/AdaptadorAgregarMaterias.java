@@ -1,4 +1,4 @@
-package com.cyberpath.smartlearn.ui.principal.combo.principal.materias;
+package com.cyberpath.smartlearn.ui.principal.combo.agregarmateria;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,7 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.MateriaViewHolder> {
+public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgregarMaterias.MateriaViewHolder> {
 
     private List<Materia> listaMateriasOriginal;
     private List<Materia> listaMateriasDuplicada;
@@ -25,7 +25,7 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         void onMateriaClick(Materia materia);
     }
 
-    public AdaptadorMaterias(List<Materia> listaMaterias, OnMateriaClickListener listener) {
+    public AdaptadorAgregarMaterias(List<Materia> listaMaterias, OnMateriaClickListener listener) {
         this.listaMateriasOriginal = listaMaterias;
         this.listener = listener;
         actualizarListaDuplicada();
@@ -45,6 +45,7 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         listaMateriasDuplicada.addAll(listaMateriasOriginal);
         listaMateriasDuplicada.add(listaMateriasOriginal.get(0));
     }
+
 
     public void actualizarLista(List<Materia> nuevasMaterias) {
         this.listaMateriasOriginal = nuevasMaterias;

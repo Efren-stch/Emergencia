@@ -1,28 +1,25 @@
 package com.cyberpath.smartlearn.ui.principal.combo.agregarmateria;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioMateria;
-import com.cyberpath.smartlearn.ui.principal.combo.principal.materias.AdaptadorMaterias;
-import com.cyberpath.smartlearn.ui.principal.combo.principal.materias.MateriasFragmentDirections;
+import com.cyberpath.smartlearn.data.model.usuario.Usuario;
+import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -33,15 +30,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgregarMateriaFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class AgregarMateriaFragment extends Fragment {
 
-    private ListView listViewMaterias;
-    private AdaptadorMaterias adaptadorMaterias;
-
-    private List<Materia> listaMateriasDisponibles = new ArrayList<>();
-    private List<Materia> listaMateriasUsuario = new ArrayList<>();
-    private List<Materia> listaAllMaterias = new ArrayList<>();
-
+    private final List<Materia> listaMateriasDisponibles = new ArrayList<>();
+    private final List<Materia> listaMateriasUsuario = new ArrayList<>();
+    private final List<Materia> listaAllMaterias = new ArrayList<>();
+    private final Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+    private ViewPager2 viewPagerMaterias;
+    private AdaptadorAgregarMaterias adapterMaterias;
     private boolean cargandoMateriasUsuario = false;
     private boolean cargandoAllMaterias = false;
 
@@ -55,14 +51,8 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listViewMaterias = view.findViewById(R.id.listViewMaterias);
-        listViewMaterias.setOnItemClickListener(this);
-        adaptadorMaterias = new AdaptadorMaterias(getContext(), listaMateriasDisponibles);
-        listViewMaterias.setAdapter(adaptadorMaterias);
-
-        Integer idUsuario = obtenerIdUsuario();
-
-        cargarMateriasUsuario(idUsuario);
+        crearCarrusel(view);
+        cargarMateriasUsuario(usuarioActual.getId());
         cargarAllMaterias();
     }
 
@@ -124,7 +114,6 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
         if (cargandoMateriasUsuario || cargandoAllMaterias) {
             return;
         }
-        // Corregido: Filtrar listaAllMaterias en lugar de listaMateriasDisponibles (que está vacía)
         List<Materia> materiasDisponiblesParaAgregar = listaAllMaterias.stream()
                 .filter(materiaTotal -> listaMateriasUsuario.stream()
                         .noneMatch(materiaUsuario -> materiaUsuario.getId().equals(materiaTotal.getId())))
@@ -134,27 +123,18 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
             getActivity().runOnUiThread(() -> {
                 listaMateriasDisponibles.clear();
                 listaMateriasDisponibles.addAll(materiasDisponiblesParaAgregar);
-                adaptadorMaterias.notifyDataSetChanged();
 
-                if (materiasDisponiblesParaAgregar.isEmpty()) {
-                    // Agregado: Informar al usuario si no hay materias disponibles
-                    Toast.makeText(getContext(), "No hay materias disponibles para inscribir", Toast.LENGTH_SHORT).show();
+                adapterMaterias.actualizarListaDuplicada();
+                adapterMaterias.notifyDataSetChanged();
+
+                if (materiasDisponiblesParaAgregar.size() > 0) {
+                    viewPagerMaterias.setCurrentItem(1, false);
                 }
             });
         }
     }
 
-    private Integer obtenerIdUsuario() {
-        return 1; // PENDIENTE: Implementar obtención dinámica (e.g., desde SharedPreferences o bundle)
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mostrarDialogoInscribir(position);
-    }
-
-    private void mostrarDialogoInscribir(int position) {
-        Materia materia = listaMateriasDisponibles.get(position); // Corregido: Acceder directamente a la lista correcta
+    private void mostrarDialogoInscribir(Materia materia) {
         View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_aceptar_cancelar, null);
 
         TextView tvMensaje = vista.findViewById(R.id.tvMensaje);
@@ -175,15 +155,14 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
 
     private void inscribirMateria(Materia materia) {
         Integer idMateria = materia.getId();
-        Integer idUsuario = obtenerIdUsuario();
-        if (idUsuario == null) {
+        if (usuarioActual.getId() == null) {
             Toast.makeText(getContext(), "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
             return;
         }
 
         UsuarioMateria inscripcion = new UsuarioMateria();
         inscripcion.setIdMateria(idMateria);
-        inscripcion.setIdUsuario(idUsuario);
+        inscripcion.setIdUsuario(usuarioActual.getId());
 
         Toast.makeText(getContext(), "Inscribiendo...", Toast.LENGTH_SHORT).show();
 
@@ -199,7 +178,8 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
                             Toast.LENGTH_LONG).show();
 
                     listaMateriasDisponibles.remove(materia);
-                    adaptadorMaterias.notifyDataSetChanged();
+                    adapterMaterias.actualizarLista(new ArrayList<>(listaMateriasDisponibles));
+                    viewPagerMaterias.setCurrentItem(1, false);
 
                     listaMateriasUsuario.add(materia);
                 } else {
@@ -213,4 +193,71 @@ public class AgregarMateriaFragment extends Fragment implements AdapterView.OnIt
             }
         });
     }
+
+
+    public void crearCarrusel(View view){
+        viewPagerMaterias = view.findViewById(R.id.viewPagerMaterias);
+        adapterMaterias = new AdaptadorAgregarMaterias(listaMateriasDisponibles, this::mostrarDialogoInscribir);
+        viewPagerMaterias.setAdapter(adapterMaterias);
+
+        viewPagerMaterias.setCurrentItem(1, false);
+
+        viewPagerMaterias.setOffscreenPageLimit(3);
+
+        viewPagerMaterias.setClipToPadding(false);
+        viewPagerMaterias.setClipChildren(false);
+        viewPagerMaterias.setPadding(80, 0, 80, 0);
+
+        viewPagerMaterias.setPageTransformer(new ViewPager2.PageTransformer() {
+            private static final float MIN_SCALE = 0.85f;
+            private static final float MIN_ALPHA = 0.5f;
+
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                if (position < -1) {
+                    page.setAlpha(0f);
+                } else if (position <= 1) {
+                    float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position) * 0.15f);
+                    page.setScaleX(scaleFactor);
+                    page.setScaleY(scaleFactor);
+
+                    page.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE) / (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+                } else {
+                    page.setAlpha(0f);
+                }
+            }
+        });
+
+        viewPagerMaterias.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            private boolean isResetting = false;
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager2.SCROLL_STATE_IDLE && !isResetting) {
+                    int position = viewPagerMaterias.getCurrentItem();
+                    int realSize = listaMateriasDisponibles.size();
+
+                    if (realSize <= 1) return;
+
+                    if (position == 0) {
+                        isResetting = true;
+                        viewPagerMaterias.setCurrentItem(realSize, false);
+                        viewPagerMaterias.post(() -> {
+                            viewPagerMaterias.requestTransform();
+                            isResetting = false;
+                        });
+                    } else if (position == realSize + 1) {
+                        isResetting = true;
+                        viewPagerMaterias.setCurrentItem(1, false);
+                        viewPagerMaterias.post(() -> {
+                            viewPagerMaterias.requestTransform();
+                            isResetting = false;
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+
 }

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/img_fondo_principal" android:orientation="vertical" android:padding="20dp" tools:context=".ui.principal.combo.configuracion.ConfiguracionFragment">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:padding="35dp"
-        android:src="@drawable/img_logo_principal_texto" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.principal.combo.configuracion.ConfiguracionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
         android:orientation="vertical"
         android:padding="10dp">
@@ -22,73 +20,23 @@
             android:gravity="center"
             android:text="Configuración"
             android:textColor="@color/acento"
-            android:textSize="35sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
-        <!-- Sección de Accesibilidad -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Opciones de Accesibilidad"
+            android:text="Ajusta las opciones según tus necesidades"
             android:textColor="@color/acento"
-            android:textSize="25sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- Activar/desactivar lectura en voz alta -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Lectura en voz alta"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:contentDescription="Opción para activar o desactivar la lectura en voz alta" />
-
-            <Switch
-                android:id="@+id/switch_lectura_voz"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="Interruptor para activar o desactivar la lectura en voz alta" />
-        </LinearLayout>
-
-        <!-- Activar reconocimiento de voz -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reconocimiento de voz"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:contentDescription="Opción para activar o desactivar el reconocimiento de voz" />
-
-            <Switch
-                android:id="@+id/switch_reconocimiento_voz"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="Interruptor para activar o desactivar el reconocimiento de voz" />
-        </LinearLayout>
-
-        <!-- Ajustar tamaño de fuente -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="12dp"
             android:orientation="vertical">
 
             <TextView
@@ -96,26 +44,24 @@
                 android:layout_height="wrap_content"
                 android:text="Tamaño de fuente"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:contentDescription="Opción para ajustar el tamaño de la fuente" />
+                android:textSize="17sp" />
 
             <SeekBar
                 android:id="@+id/seekbar_tamano_fuente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:contentDescription="Barra deslizante para ajustar el tamaño de la fuente, valor actual 18sp"
-                android:max="50"
-                android:progress="18" />
+                android:layout_marginTop="6dp"
+                android:max="2"
+                android:progress="1"
+                android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
         </LinearLayout>
 
-        <!-- Cambiar contraste de colores o modo oscuro -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
@@ -123,32 +69,21 @@
                 android:layout_weight="1"
                 android:text="Modo oscuro"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:contentDescription="Opción para activar o desactivar el modo oscuro" />
+                android:textSize="17sp" />
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_modo_oscuro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="Interruptor para activar o desactivar el modo oscuro" />
+                app:thumbTint="@color/white"
+                app:trackTint="@color/acento" />
         </LinearLayout>
 
-        <!-- Sección General -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="Opciones Generales"
-            android:textColor="@color/acento"
-            android:textSize="25sp"
-            android:textStyle="bold" />
 
-        <!-- Selección de idioma -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp"
             android:orientation="vertical">
 
             <TextView
@@ -156,24 +91,21 @@
                 android:layout_height="wrap_content"
                 android:text="Selección de idioma"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:contentDescription="Opción para seleccionar el idioma de la aplicación" />
+                android:textSize="17sp" />
 
             <Spinner
                 android:id="@+id/spinner_idioma"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/bg_esquinas_redondas_elementos"
-                android:padding="10dp"
-                android:contentDescription="Lista desplegable para seleccionar el idioma" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
         </LinearLayout>
 
-        <!-- Botones -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -181,34 +113,15 @@
                 android:id="@+id/btn_guardar_preferencias"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/secundario"
-                android:contentDescription="Botón para guardar las preferencias de configuración"
-                android:text="Guardar Preferencias"
+                android:text="Guardar"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btn_probar_configuracion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/acento"
-                android:contentDescription="Botón para probar la configuración con feedback auditivo"
-                android:text="Probar Configuración"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
         </LinearLayout>
+
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:contentDescription="Indicador de carga mientras se aplican los cambios de configuración"
-        android:visibility="gone" />
 </LinearLayout>

@@ -1,7 +1,5 @@
 package com.cyberpath.smartlearn.ui.acceso;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +21,7 @@ import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
+import com.cyberpath.smartlearn.preferences.PreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,21 +31,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SignUpFragment";
 
-    // UI
     private Button btnRegresar, btnRegistro;
     private EditText etNombre, etContrasena, etCorreo;
     private RadioButton radioActiva, radioInactiva, radioAlumno, radioDocente;
     private RadioGroup grupoAccesibilidad, grupoTipoUsuario;
     private ProgressBar loading;
 
-    private SharedPreferences prefs;
-
-    private static final String PREF_MODO_AUDIO = "modo_audio"; // clave que coincides con tu tabla configuracion
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = requireActivity().getSharedPreferences("configuracion_app", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -105,7 +98,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        prefs.edit().putBoolean(PREF_MODO_AUDIO, modoAudio).apply();
+        // Guardar accesibilidad usando PreferencesManager
+        PreferencesManager.setModoAudio(requireContext(), modoAudio);
+        Log.d(TAG, "Accesibilidad guardada: modo_audio = " + modoAudio);
 
         Integer idRol;
         if (radioAlumno.isChecked()) {
@@ -135,9 +130,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 btnRegistro.setEnabled(true);
 
                 if (response.isSuccessful() && response.body() != null) {
+                    Usuario usuarioRegistrado = response.body();
+                    int idUsuario = usuarioRegistrado.getId();
+
                     Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                    prefs.edit().putBoolean("usuarioRegistrado", true).apply();
+                    PreferencesManager.setUsuarioRegistrado(requireContext(), true);
+                    PreferencesManager.setIdUsuario(requireContext(), idUsuario);
 
                     Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
                 } else {

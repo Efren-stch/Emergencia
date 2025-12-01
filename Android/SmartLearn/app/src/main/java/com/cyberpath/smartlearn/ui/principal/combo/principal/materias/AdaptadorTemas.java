@@ -1,61 +1,95 @@
 package com.cyberpath.smartlearn.ui.principal.combo.principal.materias;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptadorTemas extends BaseAdapter {
-    Context contexto;
-    List<Tema> listaTemas;
-    LayoutInflater inflater;
+public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaViewHolder> {
 
-    public AdaptadorTemas(Context contexto, List<Tema> listaTemas) {
-        this.contexto = contexto;
-        this.listaTemas = listaTemas;
-        this.inflater = LayoutInflater.from(contexto);
+    private List<Tema> listaTemasOriginal;
+    private List<Tema> listaTemasDuplicada;
+    private OnTemaClickListener listener;
+
+    public interface OnTemaClickListener {
+        void onTemaClick(Tema tema);
     }
 
-    public void actualizarLista(List<Tema> nuevosTemas) {
-        this.listaTemas = nuevosTemas;
+    public AdaptadorTemas(List<Tema> listaTemas, OnTemaClickListener listener) {
+        this.listaTemasOriginal = listaTemas;
+        this.listener = listener;
+        actualizarListaDuplicada();
+    }
+
+    public void actualizarListaDuplicada() {
+        listaTemasDuplicada = new ArrayList<>();
+        if (listaTemasOriginal == null || listaTemasOriginal.isEmpty()) return;
+
+        int size = listaTemasOriginal.size();
+        if (size == 1) {
+            listaTemasDuplicada.addAll(listaTemasOriginal);
+            return;
+        }
+
+        listaTemasDuplicada.add(listaTemasOriginal.get(size - 1));
+        listaTemasDuplicada.addAll(listaTemasOriginal);
+        listaTemasDuplicada.add(listaTemasOriginal.get(0));
+    }
+
+    public void actualizarLista(List<Tema> nuevasTemas) {
+        this.listaTemasOriginal = nuevasTemas;
+        actualizarListaDuplicada();
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return listaTemas != null ? listaTemas.size() : 0;
+    public TemaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.carousel_element, parent, false);
+        return new TemaViewHolder(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        return listaTemas.get(position);
+    public void onBindViewHolder(@NonNull TemaViewHolder holder, int position) {
+        int realPosition = (position - 1 + listaTemasOriginal.size()) % listaTemasOriginal.size();
+        Tema tema = listaTemasOriginal.get(realPosition);
+
+        holder.tvNombre.setText(tema.getNombre());
+        //holder.tvDescripcion.setText(tema.getDescripcion() != null ? tema.getDescripcion() : "Descripción no disponible");
+        holder.tvDescripcion.setText("Descripción");
+        holder.imageTema.setImageResource(R.drawable.ic_launcher_foreground);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onTemaClick(tema);
+            }
+        });
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemCount() {
+        return listaTemasDuplicada != null ? listaTemasDuplicada.size() : 0;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listview_element, null);
+    public static class TemaViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageTema;
+        TextView tvNombre, tvDescripcion;
+
+        public TemaViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageTema = itemView.findViewById(R.id.imageMateria); // Reutilizando ID, ajusta si es diferente
+            tvNombre = itemView.findViewById(R.id.tvNombreMateria);
+            tvDescripcion = itemView.findViewById(R.id.tvDescripcionMateria);
         }
-        TextView textView = convertView.findViewById(R.id.textview);
-        ImageView imagenTema = convertView.findViewById(R.id.imageicon);
-
-        Tema tema = listaTemas.get(position);
-        textView.setText(tema.getNombre());
-        imagenTema.setImageResource(R.drawable.ic_launcher_foreground);
-
-        return convertView;
     }
 }

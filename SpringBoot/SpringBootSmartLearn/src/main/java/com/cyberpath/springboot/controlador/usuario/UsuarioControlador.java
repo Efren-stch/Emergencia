@@ -9,6 +9,7 @@ import com.cyberpath.springboot.modelo.usuario.UltimaConexion;
 import com.cyberpath.springboot.modelo.usuario.Usuario;
 import com.cyberpath.springboot.servicio.servicio.usuario.UsuarioServicio;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,27 +48,24 @@ public class UsuarioControlador {
 
     @PostMapping("/usuario")
     public ResponseEntity<UsuarioDto> save(@RequestBody UsuarioDto usuarioDto) {
-        Usuario usuario = mapDtoToEntity(usuarioDto);
+        try {
+            Usuario usuario = mapDtoToEntity(usuarioDto);
 
-        if (usuarioDto.getIdConfiguracion() != null) {
-            Configuracion configuracion = Configuracion.builder()
-                    .id(usuarioDto.getIdConfiguracion())
-                    .build();
-            configuracion.setUsuario(usuario);
-            usuario.setConfiguracion(configuracion);
+
+            if (usuarioDto.getIdConfiguracion() != null) {
+                Configuracion configuracion = Configuracion.builder()
+                        .id(usuarioDto.getIdConfiguracion())
+                        .build();
+                configuracion.setUsuario(usuario);
+                usuario.setConfiguracion(configuracion);
+            }
+
+            Usuario guardado = usuarioServicio.save(usuario);
+            return ResponseEntity.ok(convertToDto(guardado));
+        } catch (Exception e) {
+            //Log.error("Error al guardar usuario: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
         }
-
-        if (usuarioDto.getIdUltimaConexion() != null) {
-            UltimaConexion ultimaConexion = UltimaConexion.builder()
-                    .id(usuarioDto.getIdUltimaConexion())
-                    .ultimaConexion(LocalDateTime.now())  // Valor por defecto si no se proporciona
-                    .build();
-            ultimaConexion.setUsuario(usuario);
-            usuario.setUltimaConexion(ultimaConexion);
-        }
-
-        Usuario guardado = usuarioServicio.save(usuario);
-        return ResponseEntity.ok(convertToDto(guardado));
     }
 
     @PutMapping("usuario/{id}")
@@ -85,7 +83,6 @@ public class UsuarioControlador {
         if (usuarioDto.getIdUltimaConexion() != null) {
             UltimaConexion ultimaConexion = UltimaConexion.builder()
                     .id(usuarioDto.getIdUltimaConexion())
-                    .ultimaConexion(LocalDateTime.now())
                     .build();
             ultimaConexion.setUsuario(Usuario.builder().id(id).build());
             datosActualizacion.setUltimaConexion(ultimaConexion);

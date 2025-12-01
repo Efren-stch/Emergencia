@@ -14,17 +14,22 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/header_fijo"
             layout="@layout/nav_header"
-            android:id="@+id/header_fijo" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="15dp" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/navegador_principal" />
-
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -33,9 +38,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/empresa"
+        app:headerLayout="@layout/header_barra"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/menu_barra"
-        app:headerLayout="@layout/header_barra" />
+        app:menu="@menu/menu_barra" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

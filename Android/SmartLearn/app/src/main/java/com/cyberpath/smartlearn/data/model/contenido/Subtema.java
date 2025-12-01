@@ -12,6 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Subtema implements Parcelable {
 
+    public static final Creator<Subtema> CREATOR = new Creator<Subtema>() {
+        @Override
+        public Subtema createFromParcel(Parcel in) {
+            return new Subtema(in);
+        }
+
+        @Override
+        public Subtema[] newArray(int size) {
+            return new Subtema[size];
+        }
+    };
     private Integer id;
     private String nombre;
     private Integer idTema;
@@ -58,16 +69,4 @@ public class Subtema implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Subtema> CREATOR = new Creator<Subtema>() {
-        @Override
-        public Subtema createFromParcel(Parcel in) {
-            return new Subtema(in);
-        }
-
-        @Override
-        public Subtema[] newArray(int size) {
-            return new Subtema[size];
-        }
-    };
 }

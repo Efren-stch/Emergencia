@@ -5,42 +5,12 @@
     android:id="@+id/navegador_materias"
     app:startDestination="@id/materiasFragment">
 
-
-
-
-
     <!-- 2. Agregar Materia -->
     <fragment
         android:id="@+id/agregarMateriaFragment"
         android:name="com.cyberpath.smartlearn.ui.principal.combo.agregarmateria.AgregarMateriaFragment"
-        android:label="Agregar Materia" />
-
-    <!-- 3. Configuración -->
-    <fragment
-        android:id="@+id/configuracionFragment"
-        android:name="com.cyberpath.smartlearn.ui.principal.combo.configuracion.ConfiguracionFragment"
-        android:label="Configuración" />
-
-    <!-- 4. Accesibilidad -->
-    <fragment
-        android:id="@+id/accesibilidadFragment"
-        android:name="com.cyberpath.smartlearn.ui.principal.combo.accesibilidad.AccesibilidadFragment"
-        android:label="Accesibilidad" />
-
-    <!-- 5. Cuenta -->
-    <fragment
-        android:id="@+id/cuentaFragment"
-        android:name="com.cyberpath.smartlearn.ui.principal.combo.cuenta.CuentaFragment"
-        android:label="Cuenta" />
-
-    <!-- 6. Ayuda -->
-    <fragment
-        android:id="@+id/ayudaFragment"
-        android:name="com.cyberpath.smartlearn.ui.principal.combo.ayuda.AyudaFragment"
-        android:label="Ayuda" />
-
-
-
+        android:label="Agregar Materia"
+        tools:layout="@layout/fragment_agregar_materia" />
 
 
     <!-- 1. Materias -->
@@ -54,13 +24,11 @@
             android:id="@+id/action_materiasFragment_to_temasFragment"
             app:destination="@id/temasFragment">
 
-            <!-- ARGUMENTO PARA TEMAS -->
             <argument
                 android:name="materia"
                 app:argType="com.cyberpath.smartlearn.data.model.contenido.Materia" />
         </action>
     </fragment>
-
 
     <!-- 2. Temas -->
     <fragment
@@ -85,7 +53,6 @@
             app:popUpToInclusive="false" />
     </fragment>
 
-
     <!-- 3. Subtemas -->
     <fragment
         android:id="@+id/subtemasFragment"
@@ -93,7 +60,6 @@
         android:label="Subtemas"
         tools:layout="@layout/fragment_subtemas">
 
-        <!-- Argumento que recibe el fragment -->
         <argument
             android:name="tema"
             app:argType="com.cyberpath.smartlearn.data.model.contenido.Tema" />
@@ -104,5 +70,54 @@
             app:popUpTo="@id/temasFragment"
             app:popUpToInclusive="false" />
     </fragment>
+
+
+    <!-- 3. Configuración -->
+    <fragment
+        android:id="@+id/configuracionFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.configuracion.ConfiguracionFragment"
+        android:label="Configuración"
+        tools:layout="@layout/fragment_configuracion" />
+
+    <!-- 4. Accesibilidad -->
+    <fragment
+        android:id="@+id/accesibilidadFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.accesibilidad.AccesibilidadFragment"
+        android:label="Accesibilidad"
+        tools:layout="@layout/fragment_accesibilidad" />
+
+    <!-- 5. Cuenta -->
+    <fragment
+        android:id="@+id/cuentaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.cuenta.CuentaFragment"
+        android:label="Cuenta"
+        tools:layout="@layout/fragment_cuenta">
+        <action
+            android:id="@+id/action_cuentaFragment_to_editarCuentaFragment"
+            app:destination="@id/editarCuentaFragment">
+            <argument
+                android:name="tipoEdicion"
+                android:defaultValue="nombre"
+                app:argType="string" />  <!-- Valor por defecto, pero se pasará dinámicamente -->
+        </action>
+    </fragment>
+
+    <!-- 1. Editar Cuenta -->
+    <fragment
+        android:id="@+id/editarCuentaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.cuenta.EditarCuentaFragment"
+        android:label="EditarCuenta"
+        tools:layout="@layout/fragment_editar_cuenta">
+        <action
+            android:id="@+id/action_editarCuentaFragment_to_cuentaFragment"
+            app:destination="@id/cuentaFragment" />
+    </fragment>
+
+    <!-- 6. Ayuda -->
+    <fragment
+        android:id="@+id/ayudaFragment"
+        android:name="com.cyberpath.smartlearn.ui.principal.combo.ayuda.AyudaFragment"
+        android:label="Ayuda"
+        tools:layout="@layout/fragment_ayuda" />
 
 </navigation>

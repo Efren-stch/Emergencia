@@ -26,6 +26,9 @@ public class UltimaConexionImpl implements UltimaConexionServicio {
 
     @Override
     public UltimaConexion save(UltimaConexion conexion) {
+        if (conexion.getUsuario() == null || repositorio.existsById(conexion.getUsuario().getId())) {
+            throw new RuntimeException("Usuario inválido o ya tiene UltimaConexion");
+        }
         return repositorio.save(conexion);
     }
 

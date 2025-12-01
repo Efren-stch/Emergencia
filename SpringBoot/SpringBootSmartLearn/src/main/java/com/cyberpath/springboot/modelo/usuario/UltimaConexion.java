@@ -4,7 +4,6 @@ import com.cyberpath.springboot.modelo.contenido.Subtema;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +17,7 @@ public class UltimaConexion {
     private Integer id;
 
     @Column(name = "ultima_conexion", nullable = false)
-    private LocalDateTime ultimaConexion = LocalDateTime.now();
+    private String ultimaConexion;
 
     @Column(name = "dispositivo",  length = 255)
     private String dispositivo;

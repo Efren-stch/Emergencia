@@ -19,8 +19,8 @@ import java.util.concurrent.Executor;
 
 public class validarAcceso {
 
-    private LoginFragment loginFragment;
-    private ActivityResultLauncher<String> biometricPermissionLauncher;
+    private final LoginFragment loginFragment;
+    private final ActivityResultLauncher<String> biometricPermissionLauncher;
 
     public validarAcceso(LoginFragment fragment) {
         loginFragment = fragment;

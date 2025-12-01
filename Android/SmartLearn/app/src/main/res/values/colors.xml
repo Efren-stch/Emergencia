@@ -8,3 +8,56 @@
     <color name="empresa">#020136</color>
     <color name="azul_principal">#030034</color>
 </resources>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <dimen name="texto_titulo">22sp</dimen>
+        <dimen name="texto_subtitulo">18sp</dimen>
+        <dimen name="texto_normal">16sp</dimen>
+        <dimen name="texto_pequeno">14sp</dimen>
+        <dimen name="texto_muy_pequeno">12sp</dimen>
+    </resources>
+
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <dimen name="texto_titulo_normal">22sp</dimen>
+        <dimen name="texto_subtitulo_normal">18sp</dimen>
+        <dimen name="texto_normal_normal">16sp</dimen>
+        <dimen name="texto_pequeno_normal">14sp</dimen>
+        <dimen name="texto_muy_pequeno_normal">12sp</dimen>
+
+        <dimen name="texto_titulo_grande">28sp</dimen>
+        <dimen name="texto_subtitulo_grande">22sp</dimen>
+        <dimen name="texto_normal_grande">20sp</dimen>
+        <dimen name="texto_pequeno_grande">18sp</dimen>
+        <dimen name="texto_muy_pequeno_grande">16sp</dimen>
+
+        <dimen name="texto_titulo_pequeno">18sp</dimen>
+        <dimen name="texto_subtitulo_pequeno">15sp</dimen>
+        <dimen name="texto_normal_pequeno">13sp</dimen>
+        <dimen name="texto_pequeno_pequeno">11sp</dimen>
+        <dimen name="texto_muy_pequeno_pequeno">10sp</dimen>
+    </resources>
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <style name="Texto.Titulo">
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="Texto.Subtitulo">
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="Texto.Normal">
+        </style>
+
+        <style name="Texto.Pequeno">
+        </style>
+
+        <style name="Texto.MuyPequeno">
+        </style>
+    </resources>
+    -->

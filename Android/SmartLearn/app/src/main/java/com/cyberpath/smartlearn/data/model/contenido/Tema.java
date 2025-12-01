@@ -12,6 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Tema implements Parcelable {
 
+    public static final Creator<Tema> CREATOR = new Creator<Tema>() {
+        @Override
+        public Tema createFromParcel(Parcel in) {
+            return new Tema(in);
+        }
+
+        @Override
+        public Tema[] newArray(int size) {
+            return new Tema[size];
+        }
+    };
     private Integer id;
     private String nombre;
     private Integer idMateria;
@@ -59,16 +70,4 @@ public class Tema implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Tema> CREATOR = new Creator<Tema>() {
-        @Override
-        public Tema createFromParcel(Parcel in) {
-            return new Tema(in);
-        }
-
-        @Override
-        public Tema[] newArray(int size) {
-            return new Tema[size];
-        }
-    };
 }

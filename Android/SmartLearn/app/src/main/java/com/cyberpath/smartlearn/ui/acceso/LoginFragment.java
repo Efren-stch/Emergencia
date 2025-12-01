@@ -1,8 +1,7 @@
 package com.cyberpath.smartlearn.ui.acceso;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;  // O usa androidx.preference
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,8 @@ import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.logic.acceso.validarAcceso;
+import com.cyberpath.smartlearn.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,14 +30,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Button btnLogin, btnRegistro;
     private EditText etUsuario, etContrasena;
     private validarAcceso validarAcceso;
-    private SharedPreferences prefs;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         validarAcceso = new validarAcceso(this);
-        // Cambiado: Usar el mismo archivo que SignUpFragment para consistencia
-        prefs = requireActivity().getSharedPreferences("configuracion_app", requireContext().MODE_PRIVATE);
     }
 
     @Override
@@ -49,6 +47,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Integer idUsuarioActual = PreferencesManager.getIdUsuario(requireContext());
+        if (idUsuarioActual != -1) {
+            UsuarioCst.asignarConstantesUsuario(idUsuarioActual);
+        }
+
         btnLogin = view.findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
 
@@ -58,12 +61,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         etUsuario = view.findViewById(R.id.et_nombre_usuario);
         etContrasena = view.findViewById(R.id.et_contrasena);
 
-        boolean usuarioRegistrado = prefs.getBoolean("usuarioRegistrado", false);
-        if (!usuarioRegistrado) {
-            Navigation.findNavController(view).navigate(R.id.signUpFragment);
-            return;
+        // Solo activar biometría si hay un usuario registrado (no la primera vez)
+        boolean usuarioRegistrado = PreferencesManager.isUsuarioRegistrado(requireContext());
+        if (usuarioRegistrado) {
+            Log.d("LoginFragment", "Usuario registrado encontrado. Intentando biometría...");
+            view.post(() -> validarAcceso.verificarPermisoBiometria());
+        } else {
+            Log.d("LoginFragment", "Primera vez o sin usuario registrado. Mostrando solo login manual.");
+            // No hacer nada más; el usuario ve la pantalla de login
         }
-        view.post(() -> validarAcceso.verificarPermisoBiometria());
     }
 
     @Override
@@ -87,8 +93,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Usuario usuarioLogueado = response.body();
+                    int idUsuario = usuarioLogueado.getId();
+                    PreferencesManager.setIdUsuario(requireContext(), idUsuario);
+                    Integer idUsuarioActual = PreferencesManager.getIdUsuario(requireContext());
+                    UsuarioCst.asignarConstantesUsuario(idUsuarioActual);
+                    Log.d("LoginFragment", "ID de usuario actualizado en login: " + idUsuario);
+
                     Toast.makeText(getContext(), "Login exitoso", Toast.LENGTH_SHORT).show();
-                    validarAcceso.navegacionMainActivity();  // Cambiado: método correcto
+                    validarAcceso.navegacionMainActivity();
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 } else {
@@ -102,5 +115,4 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 }
