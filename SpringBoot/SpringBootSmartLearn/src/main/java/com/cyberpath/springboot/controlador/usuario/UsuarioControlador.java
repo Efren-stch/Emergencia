@@ -68,27 +68,38 @@ public class UsuarioControlador {
         }
     }
 
-    @PutMapping("usuario/{id}")
+    @PutMapping("/usuario/{id}")
     public ResponseEntity<UsuarioDto> update(@PathVariable Integer id, @RequestBody UsuarioDto usuarioDto) {
-        Usuario datosActualizacion = mapDtoToEntity(usuarioDto);
+        // Primero verifica que el usuario exista
+        Usuario existente = usuarioServicio.getById(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
 
+        Usuario datosActualizacion = mapDtoToEntity(usuarioDto);
+        datosActualizacion.setId(id); // ← IMPORTANTE: mantener el ID original
+
+        // Configuración (opcional)
         if (usuarioDto.getIdConfiguracion() != null) {
             Configuracion configuracion = Configuracion.builder()
-                    .id(usuarioDto.getIdConfiguracion())
+                    .id(id) // mismo ID que usuario (porque es 1:1 con MapsId)
                     .build();
-            configuracion.setUsuario(Usuario.builder().id(id).build());
+            configuracion.setUsuario(existente);
             datosActualizacion.setConfiguracion(configuracion);
         }
 
+        // Última conexión (opcional)
         if (usuarioDto.getIdUltimaConexion() != null) {
             UltimaConexion ultimaConexion = UltimaConexion.builder()
-                    .id(usuarioDto.getIdUltimaConexion())
+                    .id(id) // mismo ID que usuario
                     .build();
-            ultimaConexion.setUsuario(Usuario.builder().id(id).build());
+            ultimaConexion.setUsuario(existente);
             datosActualizacion.setUltimaConexion(ultimaConexion);
         }
 
         Usuario actualizado = usuarioServicio.update(id, datosActualizacion);
+
+        // Ya no puede ser null porque verificamos arriba
         return ResponseEntity.ok(convertToDto(actualizado));
     }
 

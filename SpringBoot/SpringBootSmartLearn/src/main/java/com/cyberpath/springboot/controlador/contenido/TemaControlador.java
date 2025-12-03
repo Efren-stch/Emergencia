@@ -5,7 +5,6 @@ import com.cyberpath.springboot.dto.contenido.SubtemaDto;
 import com.cyberpath.springboot.dto.contenido.TemaDto;
 import com.cyberpath.springboot.modelo.contenido.Materia;
 import com.cyberpath.springboot.modelo.contenido.Tema;
-import com.cyberpath.springboot.servicio.servicio.contenido.MateriaServicio;
 import com.cyberpath.springboot.servicio.servicio.contenido.TemaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 public class TemaControlador {
 
     private final TemaServicio temaServicio;
-    private final MateriaServicio materiaServicio;
 
     @GetMapping("/tema")
     public ResponseEntity<List<TemaDto>> lista() {

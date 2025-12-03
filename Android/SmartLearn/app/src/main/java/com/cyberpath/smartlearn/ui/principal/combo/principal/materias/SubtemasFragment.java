@@ -1,7 +1,6 @@
 package com.cyberpath.smartlearn.ui.principal.combo.principal.materias;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,36 +9,36 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
-import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
 import com.cyberpath.smartlearn.preferences.PreferencesManager;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
 
 public class SubtemasFragment extends Fragment {
 
 
+    private final List<Subtema> listaSubtemas = new ArrayList<>();
     private ViewPager2 viewPagerSubtemas;
     private AdaptadorSubtemas adapterSubtemas;
-    private final List<Subtema> listaSubtemas = new ArrayList<>();
     private TextView textoTema;
     private Tema tema;
 
@@ -107,8 +106,7 @@ public class SubtemasFragment extends Fragment {
 
     private void onSubtemaClick(Subtema subtema) {
         guardarUltimaConexion(subtema);
-        Toast.makeText(requireContext(),
-                "Seleccionaste: " + subtema.getNombre(), Toast.LENGTH_LONG).show();
+        navegarContenido(subtema);
     }
 
     public void crearCarrusel(View view) {
@@ -200,4 +198,33 @@ public class SubtemasFragment extends Fragment {
             }
         });
     }
+
+    private void navegarContenido(Subtema subtema) {
+        View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_teoria_practica, null);
+        TextView tvMensaje = vista.findViewById(R.id.tv_titulo_subtema);
+        tvMensaje.setText(subtema.getNombre());
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(vista)
+                .setCancelable(true)
+                .show();
+
+        vista.findViewById(R.id.btn_teoria).setOnClickListener(v -> {
+            var action = SubtemasFragmentDirections.actionSubtemasFragmentToTeoriaFragment(subtema);
+            NavHostFragment.findNavController(this).navigate(action);
+
+            dialog.dismiss();
+        });
+
+        vista.findViewById(R.id.btn_practica).setOnClickListener(v -> {
+            var action = SubtemasFragmentDirections.actionSubtemasFragmentToPracticaFragment(subtema);
+            NavHostFragment.findNavController(this).navigate(action);
+
+            dialog.dismiss();
+        });
+
+        vista.findViewById(R.id.btn_cancelar).setOnClickListener(v -> dialog.dismiss());
+
+    }
+
 }

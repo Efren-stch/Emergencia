@@ -63,7 +63,6 @@ public class CuentaFragment extends Fragment {
             navController.navigate(R.id.action_cuentaFragment_to_editarCuentaFragment, args);
         });
 
-        // Opcional: Botón eliminar cuenta (no implementado, pero puedes agregarlo con un endpoint DELETE)
         // view.findViewById(R.id.btn_eliminar_cuenta).setOnClickListener(v -> { /* Lógica para eliminar */ });
     }
 }

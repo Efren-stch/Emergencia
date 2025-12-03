@@ -16,7 +16,7 @@ public class UltimaConexion {
     @Column(name = "id_usuario")
     private Integer id;
 
-    @Column(name = "ultima_conexion", nullable = false)
+    @Column(name = "ultima_conexion")
     private String ultimaConexion;
 
     @Column(name = "dispositivo",  length = 255)
@@ -24,7 +24,7 @@ public class UltimaConexion {
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,7 +19,8 @@
             android:gravity="center"
             android:text="Inicio"
             android:textSize="22sp"
-            android:textColor="@color/acento" />
+            android:textColor="@color/acento"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -52,7 +53,7 @@
             android:clipChildren="false" />
 
         <LinearLayout
-            android:id="@+id/btn_cambiar_nombre"
+            android:id="@+id/btn_ultimo_subtema"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

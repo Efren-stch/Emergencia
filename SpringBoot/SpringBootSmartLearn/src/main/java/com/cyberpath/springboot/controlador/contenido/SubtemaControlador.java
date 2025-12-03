@@ -1,10 +1,15 @@
 package com.cyberpath.springboot.controlador.contenido;
 
+import com.cyberpath.springboot.dto.contenido.MateriaDto;
 import com.cyberpath.springboot.dto.contenido.SubtemaDto;
 import com.cyberpath.springboot.dto.contenido.TemaDto;
 import com.cyberpath.springboot.dto.contenido.TeoriaDto;
+import com.cyberpath.springboot.dto.ejercicio.EjercicioDto;
+import com.cyberpath.springboot.modelo.contenido.Materia;
 import com.cyberpath.springboot.modelo.contenido.Subtema;
 import com.cyberpath.springboot.modelo.contenido.Tema;
+import com.cyberpath.springboot.modelo.ejercicio.Ejercicio;
+import com.cyberpath.springboot.modelo.usuario.Usuario;
 import com.cyberpath.springboot.servicio.servicio.contenido.SubtemaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -63,24 +68,6 @@ public class SubtemaControlador {
         );
     }
 
-    @GetMapping("/subtema/{id}/teoria")
-    public ResponseEntity<List<TeoriaDto>> getTeorias(@PathVariable Integer id) {
-        Subtema subtema = subtemaServicio.getById(id);
-        if (subtema == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(
-                subtema.getTeorias()
-                        .stream()
-                        .map(t -> TeoriaDto.builder()
-                                .id(t.getId())
-                                .contenido(t.getContenido())
-                                .revisado(t.getRevisado())
-                                .build())
-                        .collect(Collectors.toList())
-        );
-    }
-
     @PostMapping("/subtema")
     public ResponseEntity<SubtemaDto> save(@RequestBody SubtemaDto subtemaDto) {
         Subtema subtema = mapDtoToEntity(subtemaDto);
@@ -98,7 +85,6 @@ public class SubtemaControlador {
     public ResponseEntity<SubtemaDto> update(@PathVariable Integer id, @RequestBody SubtemaDto subtemaDto) {
         Subtema datosActualizacion = mapDtoToEntity(subtemaDto);
 
-        // Asocia con Tema
         if (subtemaDto.getIdTema() != null) {
             datosActualizacion.setTema(Tema.builder().id(subtemaDto.getIdTema()).build());
         }
@@ -113,12 +99,40 @@ public class SubtemaControlador {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/subtema/{id}/ejercicios")
+    public ResponseEntity<List<EjercicioDto>> getEjerciciosBySubtema(@PathVariable Integer id) {
+        Subtema subtema = subtemaServicio.getById(id);
+        if (subtema == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(
+                subtema.getEjercicios()
+                        .stream()
+                        .map( s -> EjercicioDto.builder()
+                                .id(s.getId())
+                                .nombre(s.getNombre())
+                                .hecho(s.getHecho())
+                                .build())
+                        .collect(Collectors.toList())
+        );
+    }
+
     // ====================== MÉTODOS DE CONVERSIÓN ======================
     private SubtemaDto convertToDto(Subtema subtema) {
         return SubtemaDto.builder()
                 .id(subtema.getId())
                 .nombre(subtema.getNombre())
                 .idTema(subtema.getTema() != null ? subtema.getTema().getId() : null)
+                .build();
+    }
+
+    private EjercicioDto convertEjercicioToDto(Ejercicio ejercicio) {
+        return EjercicioDto.builder()
+                .id(ejercicio.getId())
+                .nombre(ejercicio.getNombre())
+                .hecho(ejercicio.getHecho() != null && ejercicio.getHecho())
+                .idSubtema(ejercicio.getSubtema() != null ? ejercicio.getSubtema().getId() : null)
                 .build();
     }
 

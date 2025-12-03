@@ -21,13 +21,13 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer id;
 
-    @Column(name = "nombre_cuenta", nullable = false, length = 100)
+    @Column(name = "nombre_cuenta", length = 100)
     private String nombreCuenta;
 
-    @Column(name = "correo", nullable = false, length = 255)
+    @Column(name = "correo", length = 255)
     private String correo;
 
-    @Column(name = "contrasena", nullable = false, length = 255)
+    @Column(name = "contrasena", length = 255)
     private String contrasena;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

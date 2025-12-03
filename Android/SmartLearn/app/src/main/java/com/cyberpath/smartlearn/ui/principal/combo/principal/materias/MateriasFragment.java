@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,10 +21,11 @@ import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
-import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
+import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.preferences.PreferencesManager;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +41,8 @@ public class MateriasFragment extends Fragment {
     private ViewPager2 viewPagerMaterias;
     private AdaptadorMaterias adapterMaterias;
     private TextView tvUltimoSubtema;
+    private LinearLayout btnUltimoSubtema;
     private int ultimaPosicionReal = 1;
-    private Subtema ultimoSubtema = new Subtema();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,17 +59,15 @@ public class MateriasFragment extends Fragment {
             }
         });
         crearCarrusel(view);
-        crearTvUltimoSubtema(view);
+        crearUltimoSubtema(view);
         cargarMaterias(usuarioActual.getId());
-
-
     }
 
-    public void crearTvUltimoSubtema(View view) {
+    public void crearUltimoSubtema(View view) {
         tvUltimoSubtema = view.findViewById(R.id.tv_ultimo_subtema);
+        btnUltimoSubtema = view.findViewById(R.id.btn_ultimo_subtema);
 
         int idUltimoSubtema = PreferencesManager.getIdSubtemaUltimaConexion(requireContext());
-
         if (idUltimoSubtema == -1) {
             tvUltimoSubtema.setText("Es tu primera vez, no tienes un historial");
             return;
@@ -81,8 +80,12 @@ public class MateriasFragment extends Fragment {
             public void onResponse(Call<Subtema> call, Response<Subtema> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Subtema subtema = response.body();
-                    requireActivity().runOnUiThread(() -> {
-                        tvUltimoSubtema.setText(subtema.getNombre());  // Cambia 'ultimoSubtema' por 'subtema'
+                    tvUltimoSubtema.setText(subtema.getNombre());
+                    btnUltimoSubtema.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            navegarUltimoSubtema(subtema);
+                        }
                     });
                 } else {
                     requireActivity().runOnUiThread(() -> {
@@ -98,7 +101,9 @@ public class MateriasFragment extends Fragment {
                     Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
+
         });
+
     }
 
     private void cargarMaterias(Integer idUsuario) {
@@ -125,7 +130,7 @@ public class MateriasFragment extends Fragment {
                             return;
                         }
 
-                        int posicionMostrar = ultimaPosicionReal + 1; // +1 por el duplicado inicial
+                        int posicionMostrar = ultimaPosicionReal + 1;
                         viewPagerMaterias.setCurrentItem(posicionMostrar, false);
 
                         viewPagerMaterias.post(() -> viewPagerMaterias.requestTransform());
@@ -169,10 +174,9 @@ public class MateriasFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                // Guardamos la posición real (sin contar duplicados)
                 int realSize = listaMaterias.size();
                 if (realSize > 0) {
-                    ultimaPosicionReal = (position - 1 + realSize) % realSize; // posición real 0 a n-1
+                    ultimaPosicionReal = (position - 1 + realSize) % realSize;
                 }
             }
 
@@ -202,6 +206,32 @@ public class MateriasFragment extends Fragment {
                 }
             }
         });
+    }
 
+    private void navegarUltimoSubtema(Subtema subtema) {
+        View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_teoria_practica, null);
+        TextView tvMensaje = vista.findViewById(R.id.tv_titulo_subtema);
+        tvMensaje.setText(subtema.getNombre());
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(vista)
+                .setCancelable(true)
+                .show();
+
+        vista.findViewById(R.id.btn_teoria).setOnClickListener(v -> {
+            var action = MateriasFragmentDirections.actionMateriasFragmentToTeoriaFragment(subtema);
+            NavHostFragment.findNavController(this).navigate(action);
+
+            dialog.dismiss();
+        });
+
+        vista.findViewById(R.id.btn_practica).setOnClickListener(v -> {
+            var action = MateriasFragmentDirections.actionMateriasFragmentToPracticaFragment(subtema);
+            NavHostFragment.findNavController(this).navigate(action);
+
+            dialog.dismiss();
+        });
+
+        vista.findViewById(R.id.btn_cancelar).setOnClickListener(v -> dialog.dismiss());
     }
 }

@@ -61,14 +61,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         etUsuario = view.findViewById(R.id.et_nombre_usuario);
         etContrasena = view.findViewById(R.id.et_contrasena);
 
-        // Solo activar biometría si hay un usuario registrado (no la primera vez)
         boolean usuarioRegistrado = PreferencesManager.isUsuarioRegistrado(requireContext());
         if (usuarioRegistrado) {
             Log.d("LoginFragment", "Usuario registrado encontrado. Intentando biometría...");
             view.post(() -> validarAcceso.verificarPermisoBiometria());
         } else {
             Log.d("LoginFragment", "Primera vez o sin usuario registrado. Mostrando solo login manual.");
-            // No hacer nada más; el usuario ve la pantalla de login
         }
     }
 

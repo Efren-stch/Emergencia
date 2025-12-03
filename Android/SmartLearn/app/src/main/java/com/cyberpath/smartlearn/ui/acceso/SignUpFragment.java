@@ -98,7 +98,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        // Guardar accesibilidad usando PreferencesManager
         PreferencesManager.setModoAudio(requireContext(), modoAudio);
         Log.d(TAG, "Accesibilidad guardada: modo_audio = " + modoAudio);
 
